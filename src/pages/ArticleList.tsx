@@ -173,7 +173,7 @@ export default function ArticleList() {
         </div>
       </section>
       
-      <Footer onNavigate={handleNavigate} />
+      <Footer />
     </div>
   );
 }
