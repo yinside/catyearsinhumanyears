@@ -1,4 +1,5 @@
 import { CMSNewsArticle, CMSUser } from '../types';
+import { createArticleSlug } from './slugGenerator';
 
 // Local storage keys
 const STORAGE_KEYS = {
@@ -47,9 +48,14 @@ export class LocalStorageManager {
     const newId = Math.max(0, ...articles.map(a => a.id)) + 1;
     const now = new Date().toISOString();
     
+    // Generate slug if not provided
+    const existingSlugs = articles.map(a => a.slug).filter(Boolean) as string[];
+    const slug = article.slug || createArticleSlug(article.title, existingSlugs);
+    
     const newArticle: CMSNewsArticle = {
       ...article,
       id: newId,
+      slug,
       createdAt: now,
       updatedAt: now
     };
@@ -110,6 +116,37 @@ export class LocalStorageManager {
     this.saveUser(user);
   }
 
+  // Generate slugs for existing articles that don't have them
+  static generateSlugsForExistingArticles(): void {
+    const articles = this.getNewsArticles();
+    const existingSlugs: string[] = [];
+    let hasChanges = false;
+    
+    // First pass: collect existing slugs
+    articles.forEach(article => {
+      if (article.slug) {
+        existingSlugs.push(article.slug);
+      }
+    });
+    
+    // Second pass: generate slugs for articles without them
+    articles.forEach(article => {
+      if (!article.slug) {
+        const newSlug = createArticleSlug(article.title, existingSlugs);
+        article.slug = newSlug;
+        existingSlugs.push(newSlug);
+        hasChanges = true;
+        console.log(`Generated slug for article "${article.title}": ${newSlug}`);
+      }
+    });
+    
+    // Save if there were changes
+    if (hasChanges) {
+      this.saveNewsArticles(articles);
+      console.log('Updated articles with generated slugs');
+    }
+  }
+
   // Clear all CMS data
   static clearAllData(): void {
     Object.values(STORAGE_KEYS).forEach(key => {
@@ -120,3 +157,5 @@ export class LocalStorageManager {
 
 // Initialize data when module loads
 LocalStorageManager.initializeData();
+// Generate slugs for existing articles
+LocalStorageManager.generateSlugsForExistingArticles();

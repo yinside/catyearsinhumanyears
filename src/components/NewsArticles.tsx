@@ -1,23 +1,31 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Newspaper, ExternalLink, Calendar, ArrowRight } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Newspaper, Calendar, ArrowRight } from 'lucide-react';
 import { NewsArticle } from '@/types';
 import { LocalStorageManager } from '@/utils/localStorage';
 
 export default function NewsArticles() {
   const [articles, setArticles] = useState<NewsArticle[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Load news articles from local storage (CMS managed data)
     const cmsData = LocalStorageManager.getNewsArticles();
+    // Sort by createdAt in descending order (newest first)
+    const sortedCmsData = cmsData.sort((a, b) => {
+      const dateA = new Date(a.createdAt || a.date);
+      const dateB = new Date(b.createdAt || b.date);
+      return dateB.getTime() - dateA.getTime();
+    });
     // Convert CMS format to display format
-    const displayArticles: NewsArticle[] = cmsData.map(cmsArticle => ({
+    const displayArticles: NewsArticle[] = sortedCmsData.map(cmsArticle => ({
       id: cmsArticle.id,
       title: cmsArticle.title,
-      summary: cmsArticle.content ? cmsArticle.content.substring(0, 100) + '...' : 'No content available',
+      summary: cmsArticle.preview || (cmsArticle.content ? cmsArticle.content.substring(0, 100) + '...' : 'No content available'),
       publishDate: cmsArticle.date,
-      imageUrl: cmsArticle.imageUrl || '',
-      externalUrl: cmsArticle.externalUrl || ''
+      imageUrl: cmsArticle.imageUrl || cmsArticle.image || '',
+      externalUrl: cmsArticle.externalUrl || '',
+      slug: cmsArticle.slug
     }));
     setArticles(displayArticles);
   }, []);
@@ -31,8 +39,13 @@ export default function NewsArticles() {
     });
   };
 
-  const handleArticleClick = (articleId: number) => {
-    window.location.href = `/article/${articleId}`;
+  const handleArticleClick = (article: NewsArticle) => {
+    // Use slug if available, otherwise fall back to ID
+    if (article.slug) {
+      navigate(`/${article.slug}`);
+    } else {
+      navigate(`/${article.id}`);
+    }
   };
 
   if (articles.length === 0) {
@@ -82,16 +95,16 @@ export default function NewsArticles() {
                   {articles[0].title}
                 </h4>
                 
-                <p className="text-base font-serif text-gray-700 leading-relaxed mb-6">
+                <p className="text-base font-serif text-gray-700 leading-relaxed mb-6 break-words">
                   {articles[0].summary}
                 </p>
                 
                 <button
-                  onClick={() => handleArticleClick(articles[0].id)}
+                  onClick={() => handleArticleClick(articles[0])}
                   className="inline-flex items-center px-6 py-3 bg-black text-white font-serif font-bold uppercase tracking-wide hover:bg-gray-800 transition-colors border-2 border-black"
                 >
                   Read Full Article
-                  <ExternalLink size={16} className="ml-2" />
+                  <ArrowRight size={16} className="ml-2" />
                 </button>
               </div>
             </div>
@@ -118,7 +131,7 @@ export default function NewsArticles() {
               <article
                 key={article.id}
                 className="bg-white border-2 border-black overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
-                onClick={() => handleArticleClick(article.id)}
+                onClick={() => handleArticleClick(article)}
               >
                 <div className="aspect-video overflow-hidden">
                   <img
@@ -140,13 +153,13 @@ export default function NewsArticles() {
                     {article.title}
                   </h4>
                   
-                  <p className="text-sm font-serif text-gray-700 leading-relaxed mb-4 line-clamp-3">
+                  <p className="text-sm font-serif text-gray-700 leading-relaxed mb-4 line-clamp-3 break-words">
                     {article.summary}
                   </p>
                   
                   <div className="flex items-center text-black font-serif font-bold text-sm uppercase tracking-wide hover:underline">
                     Read More
-                    <ExternalLink size={14} className="ml-2" />
+                    <ArrowRight size={14} className="ml-2" />
                   </div>
                 </div>
               </article>

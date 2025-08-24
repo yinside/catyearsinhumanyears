@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { LocalStorageManager } from '../utils/localStorage';
 import { CMSNewsArticle } from '../types';
-import { Edit, Trash2, Plus, Save, X, Calendar, User } from 'lucide-react';
+import { Edit, Trash2, Plus, Save, X, Calendar, User, Link, ExternalLink } from 'lucide-react';
+import { ImageUpload } from './ImageUpload';
+import { generateSlug, generateUniqueSlug } from '../utils/slugGenerator';
 
 interface NewsArticlesManagerProps {
   newsArticles: CMSNewsArticle[];
@@ -14,6 +16,8 @@ interface EditingArticle {
   content: string;
   author: string;
   date: string;
+  image?: string;
+  preview?: string;
 }
 
 interface NewArticle {
@@ -23,6 +27,8 @@ interface NewArticle {
   date: string;
   imageUrl?: string;
   externalUrl?: string;
+  image?: string;
+  preview?: string;
 }
 
 export const NewsArticlesManager: React.FC<NewsArticlesManagerProps> = ({ newsArticles, onDataUpdate }) => {
@@ -34,7 +40,9 @@ export const NewsArticlesManager: React.FC<NewsArticlesManagerProps> = ({ newsAr
     author: '',
     date: new Date().toISOString().split('T')[0],
     imageUrl: '',
-    externalUrl: ''
+    externalUrl: '',
+    image: '',
+    preview: ''
   });
 
   const handleEdit = (article: CMSNewsArticle) => {
@@ -43,7 +51,9 @@ export const NewsArticlesManager: React.FC<NewsArticlesManagerProps> = ({ newsAr
       title: article.title,
       content: article.content || '',
       author: article.author || '',
-      date: article.date || new Date().toISOString().split('T')[0]
+      date: article.date || new Date().toISOString().split('T')[0],
+      image: article.image || '',
+      preview: article.preview || ''
     });
     setShowAddForm(false);
   };
@@ -52,11 +62,27 @@ export const NewsArticlesManager: React.FC<NewsArticlesManagerProps> = ({ newsAr
     if (!editingArticle || !editingArticle.title.trim() || !editingArticle.content.trim()) return;
 
     if (editingArticle.id) {
+      // Generate new slug if title changed
+      const originalArticle = newsArticles.find(a => a.id === editingArticle.id);
+      let updatedSlug = originalArticle?.slug;
+      
+      if (originalArticle && originalArticle.title !== editingArticle.title) {
+        const baseSlug = generateSlug(editingArticle.title);
+        const existingSlugs = newsArticles
+          .filter(article => article.id !== editingArticle.id)
+          .map(article => article.slug)
+          .filter(Boolean);
+        updatedSlug = generateUniqueSlug(baseSlug, existingSlugs);
+      }
+
       LocalStorageManager.updateNewsArticle(editingArticle.id, {
         title: editingArticle.title.trim(),
         content: editingArticle.content.trim(),
         author: editingArticle.author.trim(),
-        date: editingArticle.date
+        date: editingArticle.date,
+        image: editingArticle.image?.trim(),
+        preview: editingArticle.preview?.trim(),
+        slug: updatedSlug
       });
     }
     
@@ -78,11 +104,19 @@ export const NewsArticlesManager: React.FC<NewsArticlesManagerProps> = ({ newsAr
   const handleAddNew = () => {
     if (!newArticle.title.trim() || !newArticle.content.trim()) return;
 
+    // Generate unique slug for the article
+    const baseSlug = generateSlug(newArticle.title);
+    const existingSlugs = newsArticles.map(article => article.slug).filter(Boolean);
+    const uniqueSlug = generateUniqueSlug(baseSlug, existingSlugs);
+
     LocalStorageManager.addNewsArticle({
       title: newArticle.title.trim(),
       content: newArticle.content.trim(),
       author: newArticle.author.trim() || 'Anonymous',
-      date: newArticle.date
+      date: newArticle.date,
+      image: newArticle.image?.trim(),
+      preview: newArticle.preview?.trim(),
+      slug: uniqueSlug
     });
     
     setNewArticle({
@@ -91,7 +125,9 @@ export const NewsArticlesManager: React.FC<NewsArticlesManagerProps> = ({ newsAr
       author: '',
       date: new Date().toISOString().split('T')[0],
       imageUrl: '',
-      externalUrl: ''
+      externalUrl: '',
+      image: '',
+      preview: ''
     });
     setShowAddForm(false);
     onDataUpdate();
@@ -183,13 +219,32 @@ export const NewsArticlesManager: React.FC<NewsArticlesManagerProps> = ({ newsAr
                 className="px-3 py-2 border-2 border-black focus:outline-none focus:border-gray-600"
               />
             </div>
+            
+            <div>
+              <label className="block text-sm font-bold mb-2">IMAGE:</label>
+              <ImageUpload
+                value={newArticle.image}
+                onChange={(imageUrl) => setNewArticle({ ...newArticle, image: imageUrl })}
+                className="w-full"
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-bold mb-2">PREVIEW:</label>
+              <textarea
+                value={newArticle.preview}
+                onChange={(e) => setNewArticle({ ...newArticle, preview: e.target.value })}
+                className="w-full px-3 py-2 border-2 border-black focus:outline-none focus:border-gray-600 h-20 resize-none"
+                placeholder="Enter article preview/summary..."
+              />
+            </div>
 
             <div>
               <label className="block text-sm font-bold mb-2">CONTENT:</label>
               <textarea
                 value={newArticle.content}
                 onChange={(e) => setNewArticle({ ...newArticle, content: e.target.value })}
-                className="w-full px-3 py-2 border-2 border-black focus:outline-none focus:border-gray-600 h-32 resize-none"
+                className="w-full px-3 py-2 border-2 border-black focus:outline-none focus:border-gray-600 h-48 resize-none"
                 placeholder="Enter the full article content..."
               />
             </div>
@@ -256,20 +311,33 @@ export const NewsArticlesManager: React.FC<NewsArticlesManagerProps> = ({ newsAr
                       className="px-3 py-2 border-2 border-black focus:outline-none focus:border-gray-600"
                     />
                   </div>
+                  
                   <div>
-                    <label className="block text-sm font-bold mb-2">CONTENT PREVIEW:</label>
-                    <textarea
-                      value={editingArticle.content}
-                      onChange={(e) => setEditingArticle({ ...editingArticle, content: e.target.value })}
-                      className="w-full px-3 py-2 border-2 border-black focus:outline-none focus:border-gray-600 h-20 resize-none"
+                    <label className="block text-sm font-bold mb-2">IMAGE:</label>
+                    <ImageUpload
+                      value={editingArticle.image || ''}
+                      onChange={(imageUrl) => setEditingArticle({ ...editingArticle, image: imageUrl })}
+                      className="w-full"
                     />
                   </div>
+                  
+                  <div>
+                    <label className="block text-sm font-bold mb-2">PREVIEW:</label>
+                    <textarea
+                      value={editingArticle.preview || ''}
+                      onChange={(e) => setEditingArticle({ ...editingArticle, preview: e.target.value })}
+                      className="w-full px-3 py-2 border-2 border-black focus:outline-none focus:border-gray-600 h-20 resize-none"
+                      placeholder="Enter article preview/summary..."
+                    />
+                  </div>
+                  
                   <div>
                     <label className="block text-sm font-bold mb-2">CONTENT:</label>
                     <textarea
                       value={editingArticle.content}
                       onChange={(e) => setEditingArticle({ ...editingArticle, content: e.target.value })}
-                      className="w-full px-3 py-2 border-2 border-black focus:outline-none focus:border-gray-600 h-32 resize-none"
+                      className="w-full px-3 py-2 border-2 border-black focus:outline-none focus:border-gray-600 h-48 resize-none"
+                      placeholder="Enter the full article content..."
                     />
                   </div>
                   <div className="flex space-x-4">
@@ -305,12 +373,44 @@ export const NewsArticlesManager: React.FC<NewsArticlesManagerProps> = ({ newsAr
                           <Calendar size={14} />
                           <span>{formatArticleDate(article.date || article.createdAt)}</span>
                         </div>
+                        {article.slug && (
+                          <div className="flex items-center space-x-1">
+                            <Link size={14} />
+                            <a 
+                              href={`/${article.slug}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-blue-600 hover:text-blue-800 underline flex items-center space-x-1"
+                              title="View article"
+                            >
+                              <span>{article.slug}</span>
+                              <ExternalLink size={12} />
+                            </a>
+                          </div>
+                        )}
                       </div>
-                      {article.content && (
-                        <p className="text-gray-700 mb-3 italic">{article.content.substring(0, 100)}...</p>
+                      
+                      {article.image && (
+                        <div className="mb-4">
+                          <img 
+                            src={article.image} 
+                            alt={article.title}
+                            className="w-full max-w-md h-48 object-cover border-2 border-black"
+                            onError={(e) => {
+                              e.currentTarget.style.display = 'none';
+                            }}
+                          />
+                        </div>
                       )}
+                      
+                      {article.preview && (
+                        <div className="mb-3">
+                          <p className="text-gray-700 italic font-medium">{article.preview}</p>
+                        </div>
+                      )}
+                      
                       <div className="prose max-w-none">
-                        <p className="whitespace-pre-wrap">{article.content || 'No content available'}</p>
+                        <p className="whitespace-pre-wrap break-words">{article.content || 'No content available'}</p>
                       </div>
                     </div>
                     <div className="flex space-x-2 ml-4">
@@ -338,6 +438,12 @@ export const NewsArticlesManager: React.FC<NewsArticlesManagerProps> = ({ newsAr
                       <>
                         <span className="mx-2">•</span>
                         <span>Updated: {formatDate(article.updatedAt)}</span>
+                      </>
+                    )}
+                    {article.slug && (
+                      <>
+                        <span className="mx-2">•</span>
+                        <span>Slug: {article.slug}</span>
                       </>
                     )}
                   </div>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { LocalStorageManager } from '../utils/localStorage';
 import { CMSUser, CMSNewsArticle } from '../types';
 import AdminLogin from './AdminLogin';
@@ -36,16 +37,27 @@ export const CMSAdmin: React.FC = () => {
 
   if (showLogin) {
     return (
-      <AdminLogin
-        onLogin={handleLogin}
-        onCancel={() => setShowLogin(false)}
-      />
+      <>
+        <Helmet>
+          <title>Admin Login | Cat Years Calculator</title>
+          <meta name="description" content="Login to the Cat Years Chronicle content management system to manage articles and website content." />
+        </Helmet>
+        <AdminLogin
+          onLogin={handleLogin}
+          onCancel={() => setShowLogin(false)}
+        />
+      </>
     );
   }
 
   if (!user.isAuthenticated) {
     return (
-      <div className="min-h-screen bg-white p-8">
+      <>
+        <Helmet>
+          <title>cms administration | cat years calculator</title>
+          <meta name="description" content="Content Management System for Cat Years Chronicle. Login to manage articles and website content." />
+        </Helmet>
+        <div className="min-h-screen bg-white p-8">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold mb-4">CMS ADMINISTRATION</h1>
@@ -81,12 +93,18 @@ export const CMSAdmin: React.FC = () => {
             </div>
           </div>
         </div>
-      </div>
+        </div>
+      </>
     );
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <>
+      <Helmet>
+        <title>Admin Dashboard | Cat Years Calculator</title>
+        <meta name="description" content="Manage articles and content for Cat Years Chronicle. Currently logged in as administrator." />
+      </Helmet>
+      <div className="min-h-screen bg-white">
       {/* Header */}
       <div className="border-b-4 border-black bg-white">
         <div className="max-w-6xl mx-auto px-4 py-4">
@@ -120,8 +138,9 @@ export const CMSAdmin: React.FC = () => {
           newsArticles={newsArticles}
           onDataUpdate={handleDataUpdate}
         />
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

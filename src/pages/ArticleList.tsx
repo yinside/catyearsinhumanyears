@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Newspaper, ExternalLink, Calendar, ArrowLeft } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
+import { Newspaper, ArrowRight, Calendar, ArrowLeft } from 'lucide-react';
 import { NewsArticle } from '@/types';
 import { LocalStorageManager } from '@/utils/localStorage';
 import Header from '@/components/Header';
@@ -8,18 +9,26 @@ import Footer from '@/components/Footer';
 
 export default function ArticleList() {
   const [articles, setArticles] = useState<NewsArticle[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Load news articles from local storage (CMS managed data)
     const cmsData = LocalStorageManager.getNewsArticles();
+    // Sort by createdAt in descending order (newest first)
+    const sortedCmsData = cmsData.sort((a, b) => {
+      const dateA = new Date(a.createdAt || a.date);
+      const dateB = new Date(b.createdAt || b.date);
+      return dateB.getTime() - dateA.getTime();
+    });
     // Convert CMS format to display format
-    const displayArticles: NewsArticle[] = cmsData.map(cmsArticle => ({
+    const displayArticles: NewsArticle[] = sortedCmsData.map(cmsArticle => ({
       id: cmsArticle.id,
       title: cmsArticle.title,
-      summary: cmsArticle.content ? cmsArticle.content.substring(0, 150) + '...' : 'No content available',
+      summary: cmsArticle.preview || (cmsArticle.content ? cmsArticle.content.substring(0, 150) + '...' : 'No content available'),
       publishDate: cmsArticle.date,
-      imageUrl: cmsArticle.imageUrl || '',
-      externalUrl: cmsArticle.externalUrl || ''
+      imageUrl: cmsArticle.imageUrl || cmsArticle.image || '',
+      externalUrl: cmsArticle.externalUrl || '',
+      slug: cmsArticle.slug
     }));
     setArticles(displayArticles);
   }, []);
@@ -33,13 +42,18 @@ export default function ArticleList() {
     });
   };
 
-  const handleArticleClick = (articleId: number) => {
-    window.location.href = `/article/${articleId}`;
+  const handleArticleClick = (article: NewsArticle) => {
+    // Use slug if available, otherwise fall back to ID
+    if (article.slug) {
+      navigate(`/${article.slug}`);
+    } else {
+      navigate(`/${article.id}`);
+    }
   };
 
   const handleNavigate = (sectionId: string) => {
     if (sectionId === 'home') {
-      window.location.href = '/';
+      navigate('/');
       return;
     }
     
@@ -50,8 +64,19 @@ export default function ArticleList() {
   };
 
   return (
-    <div className="min-h-screen bg-white text-black font-serif">
-      <Header onNavigate={handleNavigate} />
+    <>
+      <Helmet>
+        <title>Cat Articles & News | Cat Years Calculator</title>
+        <meta name="description" content="Explore our complete collection of articles about cat health, aging, and care. Stay informed with the latest research and expert insights on feline wellness." />
+        <meta name="keywords" content="cat articles, cat health news, feline care tips, cat aging research, pet health articles, cat wellness, veterinary insights" />
+        <meta property="og:title" content="Cat Articles & News | Cat Years Calculator" />
+        <meta property="og:description" content="Explore our complete collection of articles about cat health, aging, and care. Stay informed with the latest research and expert insights on feline wellness." />
+        <meta name="twitter:title" content="Cat Articles & News | Cat Years Calculator" />
+        <meta name="twitter:description" content="Explore our complete collection of articles about cat health, aging, and care. Stay informed with the latest research and expert insights on feline wellness." />
+      </Helmet>
+      
+      <div className="min-h-screen bg-white text-black font-serif">
+        <Header onNavigate={handleNavigate} />
       
       {/* Page Header */}
       <section className="py-16 bg-white border-b-2 border-black">
@@ -108,7 +133,7 @@ export default function ArticleList() {
                   <article
                     key={article.id}
                     className="bg-white border-2 border-black overflow-hidden hover:shadow-lg transition-all duration-300 cursor-pointer group"
-                    onClick={() => handleArticleClick(article.id)}
+                    onClick={() => handleArticleClick(article)}
                   >
                     <div className="aspect-video overflow-hidden">
                       <img
@@ -130,13 +155,13 @@ export default function ArticleList() {
                         {article.title}
                       </h3>
                       
-                      <p className="text-base font-serif text-gray-700 leading-relaxed mb-6">
+                      <p className="text-base font-serif text-gray-700 leading-relaxed mb-6 break-words">
                         {article.summary}
                       </p>
                       
                       <div className="flex items-center text-black font-serif font-bold text-sm uppercase tracking-wide group-hover:underline">
                         Read Full Article
-                        <ExternalLink size={16} className="ml-2" />
+                        <ArrowRight size={16} className="ml-2" />
                       </div>
                     </div>
                   </article>
@@ -172,8 +197,9 @@ export default function ArticleList() {
           </p>
         </div>
       </section>
-      
-      <Footer />
-    </div>
+        
+        <Footer />
+      </div>
+    </>
   );
 }

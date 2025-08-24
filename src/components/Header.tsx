@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 
 interface HeaderProps {
-  onNavigate: (section: string) => void;
+  onNavigate?: (section: string) => void;
 }
 
 export default function Header({ onNavigate }: HeaderProps) {
@@ -30,10 +30,10 @@ export default function Header({ onNavigate }: HeaderProps) {
         navigate('/');
         // Wait for navigation to complete, then scroll
         setTimeout(() => {
-          onNavigate(item.id);
+          onNavigate?.(item.id);
         }, 100);
       } else {
-        onNavigate(item.id);
+        onNavigate?.(item.id);
       }
     }
     setIsMenuOpen(false);

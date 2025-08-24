@@ -1,34 +1,35 @@
 [
   {
     "id": 1,
-    "title": "Understanding Your Senior Cat's Needs",
-    "summary": "Learn how to care for your aging feline companion with proper nutrition and health monitoring.",
-    "imageUrl": "https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=senior%20cat%20sitting%20peacefully%20vintage%20black%20and%20white%20photography%20style&image_size=landscape_4_3",
+    "title": "New Study Reveals Cats Age Differently Than Previously Thought",
+    "summary": "Recent veterinary research shows that the traditional 7-to-1 ratio for cat-to-human years may not be accurate for all life stages.",
+    "imageUrl": "https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=veterinary%20research%20laboratory%20with%20cats%20and%20scientists%20in%20white%20coats%2C%20modern%20scientific%20equipment%2C%20professional%20medical%20setting&image_size=landscape_4_3",
     "publishDate": "2024-01-15",
-    "externalUrl": "#"
+    "externalUrl": "https://example.com/cat-aging-study",
+    "image": "https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=veterinary%20research%20laboratory%20with%20cats%20and%20scientists%20in%20white%20coats%2C%20modern%20scientific%20equipment%2C%20professional%20medical%20setting&image_size=landscape_4_3",
+    "preview": "Recent veterinary research shows that the traditional 7-to-1 ratio for cat-to-human years may not be accurate for all life stages.",
+    "content": "A groundbreaking study published in the Journal of Veterinary Medicine has challenged the long-held belief that cats age at a consistent rate of seven human years for every cat year. The research, conducted over five years with over 1,000 cats, reveals that feline aging is more complex and varies significantly during different life stages.\n\nDuring the first year of life, cats experience rapid development equivalent to approximately 15 human years. The second year adds another 9 human years, bringing a 2-year-old cat to roughly 24 human years. After this initial rapid aging period, cats age at a more moderate rate of approximately 4 human years for each additional cat year.\n\nThis new understanding has important implications for cat care, particularly in terms of health monitoring and preventive care scheduling. Veterinarians now recommend more frequent check-ups for very young and senior cats, with adjusted care protocols based on these refined aging calculations."
   },
   {
     "id": 2,
-    "title": "The Science Behind Cat Age Conversion",
-    "summary": "Discover the research and methodology used to accurately convert cat years to human years.",
-    "imageUrl": "https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=cat%20age%20chart%20scientific%20diagram%20vintage%20newspaper%20style%20black%20and%20white&image_size=landscape_4_3",
+    "title": "Senior Cat Care: What Every Owner Should Know",
+    "summary": "As cats enter their golden years, their needs change significantly. Learn how to provide the best care for your aging feline companion.",
+    "imageUrl": "https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=elderly%20gray%20cat%20sleeping%20peacefully%20on%20soft%20blanket%2C%20warm%20sunlight%2C%20cozy%20home%20environment%2C%20senior%20pet%20care&image_size=landscape_4_3",
     "publishDate": "2024-01-10",
-    "externalUrl": "#"
+    "externalUrl": "https://example.com/senior-cat-care",
+    "image": "https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=elderly%20gray%20cat%20sleeping%20peacefully%20on%20soft%20blanket%2C%20warm%20sunlight%2C%20cozy%20home%20environment%2C%20senior%20pet%20care&image_size=landscape_4_3",
+    "preview": "As cats enter their golden years, their needs change significantly. Learn how to provide the best care for your aging feline companion.",
+    "content": "Caring for a senior cat requires special attention to their changing physical and emotional needs. Cats are generally considered seniors when they reach 7-10 years of age, though many cats live well into their teens and even early twenties with proper care.\n\nKey aspects of senior cat care include regular veterinary check-ups every 6 months, monitoring for common age-related conditions such as arthritis, kidney disease, and dental problems. Diet modifications may be necessary, with senior-specific foods that are easier to digest and contain appropriate nutrient levels for older cats.\n\nEnvironmental modifications can greatly improve a senior cat's quality of life. This includes providing easier access to favorite sleeping spots, litter boxes with lower sides, and maintaining a consistent routine. Many senior cats also benefit from gentle exercise and mental stimulation to keep them active and engaged."
   },
   {
     "id": 3,
-    "title": "Kitten to Adult: Tracking Your Cat's Growth",
-    "summary": "A comprehensive guide to understanding the different life stages of cats and their human age equivalents.",
-    "imageUrl": "https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=kitten%20growing%20into%20adult%20cat%20timeline%20vintage%20illustration%20black%20and%20white&image_size=landscape_4_3",
+    "title": "The Science Behind Cat Longevity",
+    "summary": "Discover the factors that contribute to a cat's lifespan and how modern veterinary care is helping our feline friends live longer, healthier lives.",
+    "imageUrl": "https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=healthy%20cat%20at%20veterinary%20clinic%2C%20modern%20medical%20equipment%2C%20caring%20veterinarian%2C%20bright%20clean%20environment&image_size=landscape_4_3",
     "publishDate": "2024-01-05",
-    "externalUrl": "#"
-  },
-  {
-    "id": 4,
-    "title": "Health Milestones in Cat Aging",
-    "summary": "Important health checkpoints and what to expect as your cat ages through different life stages.",
-    "imageUrl": "https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=veterinarian%20examining%20cat%20health%20checkup%20vintage%20medical%20illustration%20black%20and%20white&image_size=landscape_4_3",
-    "publishDate": "2023-12-28",
-    "externalUrl": "#"
+    "externalUrl": "https://example.com/cat-longevity-science",
+    "image": "https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=healthy%20cat%20at%20veterinary%20clinic%2C%20modern%20medical%20equipment%2C%20caring%20veterinarian%2C%20bright%20clean%20environment&image_size=landscape_4_3",
+    "preview": "Discover the factors that contribute to a cat's lifespan and how modern veterinary care is helping our feline friends live longer, healthier lives.",
+    "content": "The average lifespan of domestic cats has increased significantly over the past few decades, thanks to advances in veterinary medicine, improved nutrition, and better understanding of feline health needs. Indoor cats now commonly live 13-17 years, with many reaching their early twenties.\n\nSeveral factors contribute to feline longevity: genetics play a crucial role, with some breeds naturally living longer than others. Environmental factors such as indoor vs. outdoor living significantly impact lifespan, with indoor cats typically living 2-5 times longer than outdoor cats due to reduced exposure to dangers like traffic, predators, and diseases.\n\nPreventive healthcare is perhaps the most important factor in extending a cat's life. Regular vaccinations, parasite prevention, dental care, and early detection of health issues through routine check-ups can add years to a cat's life. Modern treatments for common feline conditions like kidney disease, diabetes, and hyperthyroidism have also dramatically improved outcomes for affected cats."
   }
 ]

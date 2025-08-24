@@ -27,6 +27,10 @@ export interface NewsArticle {
   imageUrl: string;
   publishDate: string;
   externalUrl: string;
+  image?: string;
+  preview?: string;
+  content?: string;
+  slug?: string;
 }
 
 // CMS related interfaces
@@ -52,6 +56,9 @@ export interface CMSNewsArticle extends CMSContentItem {
   date: string;
   imageUrl?: string;
   externalUrl?: string;
+  image?: string;
+  preview?: string;
+  slug?: string;
 }
 
 export interface CMSFormData {
