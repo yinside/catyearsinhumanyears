@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "title": "Cat Aging Formula",
+    "description": "The first year of a cat's life equals about 15 human years, the second year adds 9 more years, and each year after that equals about 4 human years.",
+    "category": "aging"
+  },
+  {
+    "id": 2,
+    "title": "Indoor vs Outdoor Cats",
+    "description": "Indoor cats typically live 12-18 years, while outdoor cats average 2-5 years due to various environmental risks.",
+    "category": "health"
+  },
+  {
+    "id": 3,
+    "title": "Senior Cat Age",
+    "description": "Cats are considered senior when they reach 7-10 years old, which is equivalent to 44-56 human years.",
+    "category": "aging"
+  },
+  {
+    "id": 4,
+    "title": "Kitten Development",
+    "description": "A 6-month-old kitten is roughly equivalent to a 10-year-old human child in terms of development and energy levels.",
+    "category": "aging"
+  },
+  {
+    "id": 5,
+    "title": "Cat Sleep Patterns",
+    "description": "Cats sleep 12-16 hours per day, which is similar to newborn humans but continues throughout their adult life.",
+    "category": "behavior"
+  }
+]

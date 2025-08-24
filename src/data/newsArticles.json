@@ -1,0 +1,34 @@
+[
+  {
+    "id": 1,
+    "title": "Understanding Your Senior Cat's Needs",
+    "summary": "Learn how to care for your aging feline companion with proper nutrition and health monitoring.",
+    "imageUrl": "https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=senior%20cat%20sitting%20peacefully%20vintage%20black%20and%20white%20photography%20style&image_size=landscape_4_3",
+    "publishDate": "2024-01-15",
+    "externalUrl": "#"
+  },
+  {
+    "id": 2,
+    "title": "The Science Behind Cat Age Conversion",
+    "summary": "Discover the research and methodology used to accurately convert cat years to human years.",
+    "imageUrl": "https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=cat%20age%20chart%20scientific%20diagram%20vintage%20newspaper%20style%20black%20and%20white&image_size=landscape_4_3",
+    "publishDate": "2024-01-10",
+    "externalUrl": "#"
+  },
+  {
+    "id": 3,
+    "title": "Kitten to Adult: Tracking Your Cat's Growth",
+    "summary": "A comprehensive guide to understanding the different life stages of cats and their human age equivalents.",
+    "imageUrl": "https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=kitten%20growing%20into%20adult%20cat%20timeline%20vintage%20illustration%20black%20and%20white&image_size=landscape_4_3",
+    "publishDate": "2024-01-05",
+    "externalUrl": "#"
+  },
+  {
+    "id": 4,
+    "title": "Health Milestones in Cat Aging",
+    "summary": "Important health checkpoints and what to expect as your cat ages through different life stages.",
+    "imageUrl": "https://trae-api-us.mchost.guru/api/ide/v1/text_to_image?prompt=veterinarian%20examining%20cat%20health%20checkup%20vintage%20medical%20illustration%20black%20and%20white&image_size=landscape_4_3",
+    "publishDate": "2023-12-28",
+    "externalUrl": "#"
+  }
+]
